@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zking.mapper.FlowerMapper" >
+  <resultMap id="BaseResultMap" type="com.zking.model.Flower" >
+    <constructor >
+      <idArg column="fid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="fname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="fprice" jdbcType="REAL" javaType="java.lang.Float" />
+      <arg column="fimg" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    fid, fname, fprice, fimg
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_flower
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <select id="list" resultMap="BaseResultMap">
+    select<include refid="Base_Column_List" />
+    from t_flower where 1=1
+    <if test="fname!=null">
+      and fname like concat('%',#{fname},'%')
+    </if>
+     ORDER BY fid desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_flower
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zking.model.Flower" >
+    insert into t_flower (fid, fname, fprice, 
+      fimg)
+    values (#{fid,jdbcType=INTEGER}, #{fname,jdbcType=VARCHAR}, #{fprice,jdbcType=REAL}, 
+      #{fimg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zking.model.Flower" >
+    insert into t_flower
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="fname != null" >
+        fname,
+      </if>
+      <if test="fprice != null" >
+        fprice,
+      </if>
+      <if test="fimg != null" >
+        fimg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fname != null" >
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="fprice != null" >
+        #{fprice,jdbcType=REAL},
+      </if>
+      <if test="fimg != null" >
+        #{fimg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zking.model.Flower" >
+    update t_flower
+    <set >
+      <if test="fname != null" >
+        fname = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="fprice != null" >
+        fprice = #{fprice,jdbcType=REAL},
+      </if>
+      <if test="fimg != null" >
+        fimg = #{fimg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zking.model.Flower" >
+    update t_flower
+    set fname = #{fname,jdbcType=VARCHAR},
+      fprice = #{fprice,jdbcType=REAL},
+      fimg = #{fimg,jdbcType=VARCHAR}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+</mapper>
